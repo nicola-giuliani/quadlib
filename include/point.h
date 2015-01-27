@@ -118,32 +118,6 @@ public:
    */
   Point<dim,Number>   operator - () const;
 
-  /**
-   *  Multiply by a factor. If possible,
-   *  use <tt>operator *=</tt> instead
-   *  since this does not need to copy a
-   *  point at least once.
-   *
-   * There is a commutative complement to this
-   * function also
-   */
-  Point<dim,Number>   operator * (const Number) const;
-
-
-  /**
-   *  Divide by a factor. If possible, use
-   *  <tt>operator /=</tt> instead since
-   *  this does not need to copy a point at
-   *  least once.
-   */
-  Point<dim,Number>   operator / (const Number) const;
-
-  /**
-   *  Returns the scalar product of this
-   *  point vector with itself, i.e. the
-   *  square, or the square of the norm.
-   */
-  Number              square () const;
 
   /**
    * Returns the Euclidian distance of
@@ -153,6 +127,10 @@ public:
    * representing the two points.
    */
   Number distance (const Point<dim,Number> &p) const;
+
+private:
+
+  Number coords[dim];
 
 };
 
