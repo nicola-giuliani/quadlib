@@ -18,5 +18,14 @@ namespace StandardExceptions
 * constructors and assignment operators of large objects, which are
 * only allowed for empty objects.
 */
-DeclException0 (ExcInvalidConstructorCall);
+	DeclException0 (ExcInvalidConstructorCall);
 }
+
+/**
+* Special assertion for index range of nonnegative indices.
+*
+* Since this is used very often and always repeats the arguments, we
+* introduce this special assertion for ExcIndexRange in order
+* to keep the user codes shorter.
+*/
+AssertIndexRange(index,range)
