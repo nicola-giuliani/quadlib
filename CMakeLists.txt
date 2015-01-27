@@ -24,11 +24,23 @@ project(quadrature-lib)
 
 file(GLOB _files source/*cc)
 include_directories(include)
-add_library(quadrature-lib SHARED ${_files})
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 
 set(CMAKE_CXX_FLAGS_DEBUG:STRING=-g -DDEBUG)
+set(CMAKE_CXX_FLAGS_RELEASE:STRING=-O3)
+
+
+add_library(quadrature.debug SHARED ${_files} )
+SET_TARGET_PROPERTIES(quadrature.debug PROPERTIES
+COMPILE_FLAGS "${CMAKE_CXX_FLAGS_DEBUG}")
+
+add_library(quadrature.release SHARED ${_files})
+SET_TARGET_PROPERTIES(quadrature.release PROPERTIES
+COMPILE_FLAGS "${CMAKE_CXX_FLAGS_RELEASE}")
 
 include(cmake/documentation.cmake)
-#include(cmake/install.cmake)
+include(cmake/install.cmake)
+
 
 #EOF
