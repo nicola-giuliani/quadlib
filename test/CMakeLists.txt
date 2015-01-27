@@ -12,9 +12,14 @@ enable_testing()
 
 add_executable(test_test test_test.cpp)
 add_executable(point_1 point_1.cc)
+add_executable(quadrature_test quadrature_test.cc)
 
 # test:
 
 add_test (test0 test_test)
+
 add_test (point0 point_1)
 add_test (point1 ${CMAKE_COMMAND} -E compare_files point_1.ouput temp.output)
+
+add_test (quadrature_test0 quadrature_test)
+add_test (quadrature_test0 ${CMAKE_COMMAND} -E compare_files quadrature.ouput temp.output)
