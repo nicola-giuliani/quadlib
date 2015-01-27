@@ -11,5 +11,8 @@ project (Test)
 enable_testing()
 
 add_executable(test_test test_test.cpp)
+add_executable(point_1 point_1.cc)
 
 add_test (test0 test_test)
+add_test (point0 point_1)
+add_test (point1 ${CMAKE_COMMAND} -E compare_files point_1.ouput output)
