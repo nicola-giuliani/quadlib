@@ -36,7 +36,16 @@
 * to keep the user codes shorter.
 */
 
-#define Assert(cond, exc) {}
+#ifdef DEBUG
+#define Assert(cond, exc)                                                   \
+  {                                                                           \
+    if (!(cond))                                                              \
+      std::exit(0);
+  }
+#else
+#define Assert(cond, exc)                                                   \
+  {}
+#endif
 
 #define AssertIndexRange(index,range) Assert((index) < (range), ExcIndexRange((index),0,(range))) {}
 
