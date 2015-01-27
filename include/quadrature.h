@@ -13,9 +13,6 @@
 //
 // ---------------------------------------------------------------------
 
-//#ifndef __our__quadrature_h
-//#define __our__quadrature_h
-
 
 #include "point.h"
 #include "exception.h"
