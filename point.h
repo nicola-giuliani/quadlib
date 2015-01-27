@@ -16,7 +16,7 @@
 #ifndef __point_h
 #define __point_h
 
-
+#include "config.h"
 #include "exceptions.h"
 #include <cmath>
 
