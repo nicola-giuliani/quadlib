@@ -18,6 +18,7 @@
 
 #include "exceptions.h"
 #include <cmath>
+#include <ostream>
 
 
 /**
@@ -67,7 +68,7 @@ public:
    *  points with <tt>dim!=1</tt> as it would leave some components
    *  of the point coordinates uninitialized.
    */
-  explicit Point (const Number x);
+  Point (const Number x);
 
   /**
    *  Constructor for two dimensional
@@ -98,7 +99,7 @@ public:
    * Return a unit vector in
    * coordinate direction <tt>i</tt>.
    */
-  static Point<dim,Number> unit_vector(const unsigned int i);
+  Point<dim,Number> unit_vector(const unsigned int i);
 
   /**
    *  Read access to the <tt>index</tt>th
@@ -130,7 +131,7 @@ public:
 
 private:
 
-  Number coords[dim];
+  Number values[dim];
 
 };
 
@@ -199,7 +200,7 @@ Point<dim,Number>
 Point<dim,Number>::unit_vector(unsigned int i)
 {
   Point<dim,Number> p;
-  p[i] = 1.;
+  p(i) = 1.;
   return p;
 }
 
@@ -241,29 +242,6 @@ Point<dim,Number>::operator - () const
 
 template <int dim, typename Number>
 inline
-Point<dim,Number>
-Point<dim,Number>::operator * (const Number factor) const
-{
-  return (Point<dim,Number>(*this) *= factor);
-}
-
-
-
-template <int dim, typename Number>
-inline
-Number
-Point<dim,Number>::square () const
-{
-  Number q = Number();
-  for (unsigned int i=0; i<dim; ++i)
-    q += this->values[i] * this->values[i];
-  return q;
-}
-
-
-
-template <int dim, typename Number>
-inline
 Number
 Point<dim,Number>::distance (const Point<dim,Number> &p) const
 {
@@ -279,103 +257,7 @@ Point<dim,Number>::distance (const Point<dim,Number> &p) const
 
 
 
-template <int dim, typename Number>
-inline
-Point<dim,Number> Point<dim,Number>::operator / (const Number factor) const
-{
-  return (Point<dim,Number>(*this) /= factor);
-}
-
-
-
 #endif // DOXYGEN
 
-
-/*------------------------------- Global functions: Point ---------------------------*/
-
-
-/**
- * Global operator scaling a point vector by a scalar.
- * @relates Point
- */
-template <int dim, typename Number>
-inline
-Point<dim,Number> operator * (const Number             factor,
-                              const Point<dim,Number> &p)
-{
-  return p*factor;
-}
-
-
-
-/**
- * Global operator scaling a point vector by a scalar.
- * @relates Point
- */
-template <int dim>
-inline
-Point<dim,double> operator * (const double             factor,
-                              const Point<dim,double> &p)
-{
-  return p*factor;
-}
-
-
-
-/**
- * Output operator for points. Print the elements consecutively,
- * with a space in between.
- * @relates Point
- */
-template <int dim, typename Number>
-inline
-std::ostream &operator << (std::ostream            &out,
-                           const Point<dim,Number> &p)
-{
-  for (unsigned int i=0; i<dim-1; ++i)
-    out << p[i] << ' ';
-  out << p[dim-1];
-
-  return out;
-}
-
-
-
-/**
- * Output operator for points. Print the elements consecutively,
- * with a space in between.
- * @relates Point
- */
-template <int dim, typename Number>
-inline
-std::istream &operator >> (std::istream      &in,
-                           Point<dim,Number> &p)
-{
-  for (unsigned int i=0; i<dim; ++i)
-    in >> p[i];
-
-  return in;
-}
-
-
-#ifndef DOXYGEN
-
-/**
- * Output operator for points of dimension 1. This is implemented
- * specialized from the general template in order to avoid a compiler
- * warning that the loop is empty.
- */
-template <typename Number>
-inline
-std::ostream &operator << (std::ostream &out,
-                           const Point<1,Number> &p)
-{
-  out << p[0];
-
-  return out;
-}
-
-#endif // DOXYGEN
-DEAL_II_NAMESPACE_CLOSE
 
 #endif
