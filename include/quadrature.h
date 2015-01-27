@@ -17,7 +17,7 @@
 //#define __our__quadrature_h
 
 
-//#include <config.h>
+#include <config.h>
 #include <point.h>
 #include <exception.h>
 //#include <vector>
