@@ -103,7 +103,7 @@ check_cells (std::vector<Quadrature<dim>*> &quadratures, std::ofstream
 
 int main()
 {
-  std::ofstream logfile("output.txt");
+  std::ofstream logfile("temp.output");
 
   std::vector<Quadrature<1> *> q1;
   std::vector<Quadrature<2> *> q2;
