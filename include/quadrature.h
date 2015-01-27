@@ -15,7 +15,7 @@
 
 
 #include "point.h"
-#include "exception.h"
+//#include "exception.h"
 #include <vector>
 
 /**

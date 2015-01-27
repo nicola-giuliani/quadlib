@@ -1,3 +1,6 @@
+#include "include/point.h"
+#include "include/quadrature.h"
+
 template <>
 Quadrature<0>::Quadrature (const unsigned int n_q)
     :
@@ -45,22 +48,3 @@ Quadrature<dim>::Quadrature (const std::vector<Point<dim> > &points,
         ExcDimensionMismatch(weights.size(), points.size()));
 }
 
-
-
-template <int dim>
-Quadrature<dim>::Quadrature (const std::vector<Point<dim> > &points)
-    :
-    quadrature_points(points),
-    weights(points.size(), std::atof("Inf"))
-{
-    Assert(weights.size() == points.size(),
-        ExcDimensionMismatch(weights.size(), points.size()));
-}
-
-
-template <int dim>
-Quadrature<dim>::Quadrature (const Point<dim> &point)
-    :
-    quadrature_points(std::vector<Point<dim> > (1, point)),
-    weights(std::vector<double> (1, 1.))
-  {}
