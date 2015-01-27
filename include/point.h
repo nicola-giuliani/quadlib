@@ -154,6 +154,10 @@ public:
    */
   Number distance (const Point<dim,Number> &p) const;
 
+private:
+
+  Number coords[dim];
+
 };
 
 /*------------------------------- Inline functions: Point ---------------------------*/
