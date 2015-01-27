@@ -20,7 +20,6 @@
 #include "exceptions.h"
 #include <cmath>
 
-DEAL_II_NAMESPACE_OPEN
 
 /**
  * The <tt>Point</tt> class provides for a point or vector in a space with
@@ -60,14 +59,6 @@ public:
    */
   Point ();
 
-  /**
-   * Constructor. Initialize all
-   * entries to zero if
-   * <tt>initialize==true</tt> (in which case it is equivalent to the default
-   * constructor) or leaves the elements uninitialized if
-   * <tt>initialize==false</tt>.
-   */
-  explicit Point (const bool initialize);
 
   /**
    *  Constructor for one dimensional
@@ -164,12 +155,6 @@ public:
    */
   Number distance (const Point<dim,Number> &p) const;
 
-  /**
-   * Read or write the data of this object to or
-   * from a stream for the purpose of serialization
-   */
-  template <class Archive>
-  void serialize(Archive &ar, const unsigned int version);
 };
 
 /*------------------------------- Inline functions: Point ---------------------------*/
