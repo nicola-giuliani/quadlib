@@ -13,16 +13,14 @@
 //
 // ---------------------------------------------------------------------
 
-#ifndef __deal2__quadrature_h
-#define __deal2__quadrature_h
+//#ifndef __our__quadrature_h
+//#define __our__quadrature_h
 
 
-#include <deal.II/base/config.h>
-#include <deal.II/base/point.h>
-#include <deal.II/base/subscriptor.h>
-#include <vector>
-
-DEAL_II_NAMESPACE_OPEN
+//#include <config.h>
+#include <point.h>
+#include <exception.h>
+//#include <vector>
 
 /*!@addtogroup Quadrature */
 /*@{*/
@@ -54,7 +52,7 @@ DEAL_II_NAMESPACE_OPEN
  *
  * For each quadrature formula we denote by <tt>m</tt>, the maximal
  * degree of polynomials integrated exactly. This number is given in
- * the documentation of each formula. The order of the integration
+3 * the documentation of each formula. The order of the integration
  * error is <tt>m+1</tt>, that is, the error is the size of the cell
  * to the <tt>m+1</tt> by the Bramble-Hilbert Lemma. The number
  * <tt>m</tt> is to be found in the documentation of each concrete
@@ -81,18 +79,9 @@ DEAL_II_NAMESPACE_OPEN
  * @author Wolfgang Bangerth, Guido Kanschat, 1998, 1999, 2000, 2005, 2009
  */
 template <int dim>
-class Quadrature : public Subscriptor
+class Quadrature : 
 {
 public:
-  /**
-   * Define a typedef for a
-   * quadrature that acts on an
-   * object of one dimension
-   * less. For cells, this would
-   * then be a face quadrature.
-   */
-  typedef Quadrature<dim-1> SubQuadrature;
-
   /**
    * Constructor.
    *
@@ -106,43 +95,6 @@ public:
    * was meant.
    */
   explicit Quadrature (const unsigned int n_quadrature_points = 0);
-
-  /**
-   * Build this quadrature formula
-   * as the tensor product of a
-   * formula in a dimension one
-   * less than the present and a
-   * formula in one dimension.
-   *
-   * <tt>SubQuadrature<dim>::type</tt>
-   * expands to
-   * <tt>Quadrature<dim-1></tt>.
-   */
-  Quadrature (const SubQuadrature &,
-              const Quadrature<1> &);
-
-  /**
-   * Build this quadrature formula
-   * as the <tt>dim</tt>-fold
-   * tensor product of a formula in
-   * one dimension.
-   *
-   * Assuming that the points in
-   * the one-dimensional rule are in
-   * ascending order, the points of
-   * the resulting rule are ordered
-   * lexicographically with
-   * <i>x</i> running fastest.
-   *
-   * In order to avoid a conflict
-   * with the copy constructor in
-   * 1d, we let the argument be a
-   * 0d quadrature formula for
-   * dim==1, and a 1d quadrature
-   * formula for all other space
-   * dimensions.
-   */
-  explicit Quadrature (const Quadrature<dim != 1 ? 1 : 0> &quadrature_1d);
 
   /**
    * Copy constructor.
@@ -162,29 +114,6 @@ public:
   Quadrature (const std::vector<Point<dim> > &points,
               const std::vector<double>      &weights);
 
-  /**
-   * Construct a dummy quadrature
-   * formula from a list of points,
-   * with weights set to
-   * infinity. The resulting object
-   * is therefore not meant to
-   * actually perform integrations,
-   * but rather to be used with
-   * FEValues objects in
-   * order to find the position of
-   * some points (the quadrature
-   * points in this object) on the
-   * transformed cell in real
-   * space.
-   */
-  Quadrature (const std::vector<Point<dim> > &points);
-
-  /**
-   * Constructor for a one-point
-   * quadrature. Sets the weight of
-   * this point to one.
-   */
-  Quadrature (const Point<dim> &point);
 
   /**
    * Virtual destructor.
@@ -242,21 +171,7 @@ public:
    */
   const std::vector<double> &get_weights () const;
 
-  /**
-   * Determine an estimate for
-   * the memory consumption (in
-   * bytes) of this
-   * object.
-   */
-  std::size_t memory_consumption () const;
-
-  /**
-  * Write or read the data of this object to or
-  * from a stream for the purpose of serialization.
-  */
-  template <class Archive>
-  void serialize (Archive &ar, const unsigned int version);
-
+ 
 protected:
   /**
    * List of quadrature points. To
@@ -273,101 +188,6 @@ protected:
    */
   std::vector<double>      weights;
 };
-
-
-/**
- * Quadrature formula implementing anisotropic distributions of
- * quadrature points on the reference cell. To this end, the tensor
- * product of <tt>dim</tt> one-dimensional quadrature formulas is
- * generated.
- *
- * @note Each constructor can only be used in the dimension matching
- * the number of arguments.
- *
- * @author Guido Kanschat, 2005
- */
-template <int dim>
-class QAnisotropic : public Quadrature<dim>
-{
-public:
-  /**
-   * Constructor for a
-   * one-dimensional formula. This
-   * one just copies the given
-   * quadrature rule.
-   */
-  QAnisotropic(const Quadrature<1> &qx);
-
-  /**
-   * Constructor for a
-   * two-dimensional formula.
-   */
-  QAnisotropic(const Quadrature<1> &qx,
-               const Quadrature<1> &qy);
-
-  /**
-   * Constructor for a
-   * three-dimensional formula.
-   */
-  QAnisotropic(const Quadrature<1> &qx,
-               const Quadrature<1> &qy,
-               const Quadrature<1> &qz);
-};
-
-
-/**
- * Quadrature formula constructed by iteration of another quadrature formula in
- * each direction. In more than one space dimension, the resulting quadrature
- * formula is constructed in the usual way by building the tensor product of
- * the respective iterated quadrature formula in one space dimension.
- *
- * In one space dimension, the given base formula is copied and scaled onto
- * a given number of subintervals of length <tt>1/n_copies</tt>. If the quadrature
- * formula uses both end points of the unit interval, then in the interior
- * of the iterated quadrature formula there would be quadrature points which
- * are used twice; we merge them into one with a weight which is the sum
- * of the weights of the left- and the rightmost quadrature point.
- *
- * Since all dimensions higher than one are built up by tensor products of
- * one dimensional and <tt>dim-1</tt> dimensional quadrature formulæ, the
- * argument given to the constructor needs to be a quadrature formula in
- * one space dimension, rather than in <tt>dim</tt> dimensions.
- *
- * The aim of this class is to provide a
- * low order formula, where the error constant can be tuned by
- * increasing the number of quadrature points. This is useful in
- * integrating non-differentiable functions on cells.
- *
- * @author Wolfgang Bangerth 1999
- */
-template <int dim>
-class QIterated : public Quadrature<dim>
-{
-public:
-  /**
-   * Constructor. Iterate the given
-   * quadrature formula <tt>n_copies</tt> times in
-   * each direction.
-   */
-  QIterated (const Quadrature<1> &base_quadrature,
-             const unsigned int   n_copies);
-
-  /**
-   * Exception
-   */
-  DeclException0 (ExcInvalidQuadratureFormula);
-private:
-  /**
-   * Check whether the given
-   * quadrature formula has quadrature
-   * points at the left and right end points
-   * of the interval.
-   */
-  static bool
-  uses_both_endpoints (const Quadrature<1> &base_quadrature);
-};
-
-
 
 /*@}*/
 
@@ -426,41 +246,6 @@ Quadrature<dim>::get_weights () const
 
 
 
-template <int dim>
-template <class Archive>
-inline
-void
-Quadrature<dim>::serialize (Archive &ar, const unsigned int)
-{
-  // forward to serialization
-  // function in the base class.
-  ar   &static_cast<Subscriptor &>(*this);
-
-  ar &quadrature_points &weights;
-}
-
-
-
-/* -------------- declaration of explicit specializations ------------- */
-
-template <>
-Quadrature<0>::Quadrature (const unsigned int);
-template <>
-Quadrature<0>::Quadrature (const Quadrature<-1> &,
-                           const Quadrature<1> &);
-template <>
-Quadrature<0>::Quadrature (const Quadrature<1> &);
-template <>
-Quadrature<0>::~Quadrature ();
-
-template <>
-Quadrature<1>::Quadrature (const Quadrature<0> &,
-                           const Quadrature<1> &);
-
-template <>
-Quadrature<1>::Quadrature (const Quadrature<0> &);
 
 #endif // DOXYGEN
-DEAL_II_NAMESPACE_CLOSE
 
-#endif
