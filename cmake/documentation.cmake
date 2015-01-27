@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
 #Doxygen documentation
 #----------------------------------------------------------------------------
-configure_file(${PROJECT_SOURCE_DIR}/cmake/Doxyfile ${PROJECT_BINARY_DIR})
+configure_file(${PROJECT_SOURCE_DIR}/cmake/Doxyfile ${PROJECT_BINARY_DIR}/Doxyfile)
 INCLUDE( FindDoxygen )
 IF (DOXYGEN_EXECUTABLE)
 	MESSAGE( STATUS "Doxygen found")
