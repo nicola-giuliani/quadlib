@@ -27,7 +27,7 @@ void check ( std::ofstream &temp )
 {
   Point<dim> p;
   for (unsigned int i=0; i<dim; ++i)
-    p[i] = i;
+    p(i) = i;
 
   for (unsigned int i=0; i<dim; ++i)
     temp << "QLIB::" << p[i] << ' ';
