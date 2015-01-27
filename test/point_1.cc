@@ -16,7 +16,7 @@
 
 // test for Point::operator()
 
-#include <../include/point.h>
+#include "../include/point.h"
 
 #include <fstream>
 #include <iomanip>
