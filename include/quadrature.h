@@ -17,13 +17,9 @@
 //#define __our__quadrature_h
 
 
-#include <config.h>
-#include <point.h>
-#include <exception.h>
-//#include <vector>
-
-/*!@addtogroup Quadrature */
-/*@{*/
+#include "point.h"
+#include "exception.h"
+#include <vector>
 
 /**
  * Base class for quadrature formulæ in arbitrary dimensions. This class
@@ -189,7 +185,6 @@ protected:
   std::vector<double>      weights;
 };
 
-/*@}*/
 
 #ifndef DOXYGEN
 
