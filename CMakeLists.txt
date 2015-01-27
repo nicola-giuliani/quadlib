@@ -11,3 +11,7 @@ include_directories(include)
 add_library(quadrature-lib SHARED ${_files})
 
 set(CMAKE_CXX_FLAGS_DEBUG:STRING=-g -DDEBUG)
+
+include(cmake/documentation.cmake)
+include(cmake/install.cmake)
+
